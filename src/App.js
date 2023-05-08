@@ -14,7 +14,6 @@ function App() {
       <AlertProvider>
         <main>
           <Header />
-          {/* <MobileHeader /> */}
           <LandingSection />
           <ProjectsSection />
           <ContactMeSection />

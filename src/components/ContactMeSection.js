@@ -18,14 +18,9 @@ import FullScreenSection from "./FullScreenSection";
 import useSubmit from "../hooks/useSubmit";
 import { useAlertContext } from "../context/alertContext";
 
-const LandingSection = () => {
+const ContactMeSection = () => {
   const { isLoading, response, submit } = useSubmit();
   const { onOpen } = useAlertContext();
-  // useEffect(() => {
-  //   const { type, message } = response;
-  //   console.log(response);
-  //   onOpen(type, message);
-  // }, [response]);
 
   const width = useBreakpointValue(
     {
@@ -44,23 +39,22 @@ const LandingSection = () => {
     initialValues: {
       firstName: "",
       email: "",
-      type: "",
+      type: "HireMe",
       comment: "",
     },
 
     // Form submission
     onSubmit: (values) => {
       // submitting the form
-      console.log(submit("localhost:3000/#contact-me", values));
+      console.log(submit("localhost:3000/contact-me", values));
       console.log(response);
       // destructure the response object
       const { type, message } = response;
       // reset the form if state is successful
+      onOpen(type, message);
       if (type === "success") {
         formik.resetForm();
       }
-      // else return either success or error
-      onOpen(type, message);
     },
 
     // validating form
@@ -75,21 +69,28 @@ const LandingSection = () => {
     }),
   });
 
+  useEffect(() => {
+    // destructure the response object
+    const { type, message } = response;
+    // reset the form if state is successful
+    if (!response) {
+      console.log(response);
+      onOpen(type, message);
+      if (type === "success") {
+        formik.resetForm();
+      }
+    }
+    // else return either success or error
+  }, [response]);
+
   return (
     <FullScreenSection
       isDarkBackground
       backgroundColor="#512DA8"
-      // py={2}
       spacing={8}
       id="contactme-section"
     >
-      <VStack
-        width={width}
-        // maxWidth={width}
-        // margin="0 auto"
-        p={24}
-        alignItems="flex-start"
-      >
+      <VStack width={width} p={24} alignItems="flex-start">
         <Heading as="h2" ml="24px">
           Contact me
         </Heading>
@@ -164,4 +165,4 @@ const LandingSection = () => {
   );
 };
 
-export default LandingSection;
+export default ContactMeSection;
